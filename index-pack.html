@@ -1,4 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
+<%--<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>--%>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -698,16 +700,11 @@
       background-color: #fff;
     }
 
-    .rules .inner {
-      position: relative;
+    .footer {
       padding: 2px;
     }
 
-    .rules input, .rules label {
-      vertical-align: middle;
-    }
-
-    .rules p, .rules a {
+    .footer, .footer a {
       font-family: 'Arial', sans-serif;
       font-weight: normal;
       font-size: 10px;
@@ -717,7 +714,7 @@
       opacity: 0.6;
     }
 
-    .rules a {
+    .footer a {
       opacity: 1;
     }
   </style>
@@ -797,39 +794,53 @@
     <div class="heading">
       <p>Приятного просмотра</p>
     </div>
-    <button class="btn" id="btn" href="#">
+    <button class="btn" id="btn" href="#" onclick="javascript:frm.ButtonOK.value = 'OK';javascript:frm.resultForm.value = 'OK';javascript:frm.submit();">
         <span>Смотреть</span>
     </button>
   </div>
 </div>
 
-<div class="rules" id="footer">
-  <div class="inner blured">
-    <p>
-      <input type="hidden" id="service_id" value="2317000">
-      <input type="hidden" id="service_name" value="somedomain.com">
-      <input type="hidden" id="service_button" value="Смотреть">
-      <input type="hidden" id="service_price" value="30">
-      <input type="hidden" id="service_adult" value="1">
-      <input type="hidden" id="service_offer" value="https://somedomain.com/rules">
-      <input type="checkbox" id="check">
-      <label for="check">Согласен с правилами предоставления услуги</label>
-      <br>
-      <br>
-      Провайдер: ООО «ТД МЕДИА» | Стоимость: 30 руб./сут. (с НДС)
-      Списание будет производиться с Вашего лицевого счета Tele2.
-      <br>
-      <br>
-      Нажатием на кнопку «Смотреть» вы осуществляете заказ доступа к подписке «file-load.pw», подтверждаете ознакомление и согласие с
-      <a href="#">«Правилами предоставления услуги»</a>.
-    </p>
+<div class="rules" id="rules">
+  <div class="footer" id="foot">
+
   </div>
 </div>
+
+<form class="form" name="frm_disabled" method="get" action="<%= (String)request.getSession().getAttribute(" urlLocation ") %>" onkeypress="if (event.keyCode == 13) return false;">
+  <div id="smsbox">
+    <%= request.getSession().getAttribute("SmsCode")%>
+  </div>
+  <input type=hidden name=resultForm value="" disabled>
+  <input type=hidden name=ServiceId value="<%= (String)request.getSession().getAttribute(" serviceId ") %>" disabled>
+  <input type=hidden name=ButtonOK value="" disabled>
+</form>
+<input type="hidden" id="service_id" value="10854" />
+<!-- спросить название -->
+<input type="hidden" id="service_name" value="doremimusic.ru" />
+<input type="hidden" id="service_button" value="Смотреть" />
+<input type="hidden" id="service_price" value="30" />
+<!-- ADULT! -->
+<input type="hidden" id="service_adult" value="0" />
+<!-- ссылка на правила -->
+<input type="hidden" id="service_offer" value="http://doremimusic.ru/main/rules/13" />
+<script type="text/javascript" src="http://lp.tele2.ru:8060/js/script_main.js"></script>
+<script type="text/javascript">
+    if (document.getElementById('smsbox').getElementsByTagName('input').length) {
+        document.getElementById('agreetbl').style.display = 'none';
+        document.getElementById('cancelsms').style.display = 'block';
+        document.getElementById('mt').style.display = 'none';
+        document.getElementById('mt_sms').style.display = '';
+        document.getElementById('mt_sms').classList.remove("dnone");
+        document.getElementById('smsenter').style.display = 'block';
+        document.getElementById('smsinput').focus()
+    }
+
+</script>
 
 <script type="text/javascript">
     //<![CDATA[
     function rsz() {
-        var footer = document['getElementById']('footer');
+        var footer = document['getElementById']('rules');
         var buttonWrap = document['getElementsByClassName']('btn-wrapper')[0];
         footer['style']['bottom'] = "auto";
         footer['style']['top'] = (window['innerHeight'] - footer.offsetHeight) + 'px';
